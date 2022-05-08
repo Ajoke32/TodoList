@@ -1,0 +1,54 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+td a{
+    border:1px solid black;
+     padding:2px 15px 2px 15px;
+     text-decoration:none;
+     border-radius:3px;
+     color:white;
+     background-color: azure;
+    
+}
+td a:hover {
+        transition:0.2s;
+        background-color: chartreuse;
+        border: 1px solid darkorchid;
+}
+td:not(:first-child) {
+    text-align: center;
+}
+th:not(:first-child) {
+    text-align: center;
+}
+.CompletedTask td:not(:last-child){
+   text-decoration:line-through;
+}
+caption {
+    display: table-caption;
+    text-align: left;
+    caption-side: top;
+    font-size:25px;
+}
+
+form {
+    text-align:center;
+}
+.filter {
+    margin-top:10px;
+}

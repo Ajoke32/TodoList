@@ -1,0 +1,158 @@
+﻿@model WebAppTodo.Models.TaskRepositoryList
+@using WebAppTodo.Models;
+
+
+
+
+
+
+
+<div class="form">
+    <form method="post" asp-controller="Task" asp-action="CreateTask">
+        <input placeholder="Task" asp-for="Tasks.Title" required id="Title" />
+        <input type="hidden" asp-for="Tasks.id" id="Taskid" />
+        <input type="datetime-local" placeholder="DeadLine" asp-for="Tasks.DeadLine" />
+        <select class="list" asp-for="Tasks.CategoryName">
+            @foreach (var item in @Model.Categories)
+            {
+                <option value="@item.Name">@item.Name</option>
+            }
+        </select>
+        <input type="submit" value="Add" />
+        <a href="/Task/CateList">Create Task</a>
+    </form>
+
+    <form method="post" asp-controller="Task" asp-action="Filter">
+        <select asp-for="Tasks.CategoryName">
+            @foreach (var item in @Model.Categories)
+            {
+                <option value="@item.Name">@item.Name</option>
+            }
+            <option value="All">All</option>
+        </select>
+        <input class="filter" type="submit" value="Filter" />
+    </form>
+
+</div>
+<div class="row">
+    <table class="table">
+        <caption>Tasks</caption>
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">DeadLine</th>
+                <th scope="col">Category</th>
+                <th scope="col">Task Complete</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model.Taskes != null)
+            {
+                @foreach (var item in @Model.Taskes)
+                {
+                    if (@item.TaskComplete == 0)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            @if (@item.DeadLine == null)
+                            {
+                                <td>No date</td>
+                            }
+                            else
+                            {
+                                <td>@item.DeadLine</td>
+                            }
+                            <td>@item.CategoryName</td>
+                            <td>
+                                <a onclick="CompleteTask('@item.id')">To complete</a>
+                            </td>
+                            <td>
+                                <a onclick="DeleteTask('@item.id')">Del</a>
+                                <a onclick="Updatetask('@item.id','@item.Title','@item.DeadLine','@item.CategoryName')">Edit</a>
+                            </td>
+
+                        </tr>
+                    }
+
+                }
+            }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+<div class="CompletedTask">
+    <table class="table">
+        <caption>Completetd tasks</caption>
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">DeadLine</th>
+                <th scope="col">Category</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        @foreach (var item in @Model.Taskes)
+        {
+            if (@item.TaskComplete == 1)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    @if (@item.DeadLine == null)
+                    {
+                        <td>No date</td>
+                    }
+                    else
+                    {
+                        <td>@item.DeadLine</td>
+                    }
+                    <td>@item.CategoryName</td>
+                    <td><a onclick="DeleteTask('@item.id')">Del</a></td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<script>
+    function DeleteTask(id){
+
+         alert("do you want delete this?");
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DeleteTasks","Task")',
+            data:{TaskId:id},
+            success: function (result) {
+                alert('Successfully received Data ');
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+            }
+        });
+    }
+    function Updatetask(id,Title,DeadLine,CategoryName){
+        let a = new Date();
+        let time =`${a.getFullYear()}-0${a.getMonth()}-0${a.getDay()}`;
+        alert(id);
+        $('#Taskid').val(id);
+        $('#Title').val(Title);
+        $('input[type="datetime-local"]').val(`${time}T14:23`);
+        $('.list').val(CategoryName);
+    }
+    function CompleteTask(id){
+
+
+         $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CompleteTasks","Task")',
+            data:{TaskId:id},
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+            }
+        });
+
+    }
+</script>

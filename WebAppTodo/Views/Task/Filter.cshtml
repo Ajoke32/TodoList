@@ -1,0 +1,48 @@
+﻿@model WebAppTodo.Models.TaskRepositoryList
+@using WebAppTodo.Models;
+
+
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Title</th>
+                <th scope="col">DeadLine</th>
+                <th scope="col">Category</th>
+                <th scope="col">Task Complete</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach (var item in @Model.Taskes)
+                {
+                    
+                        <tr>
+                            <td>@item.id</td>
+                            <td>@item.Title</td>
+                            @if (@item.DeadLine == null)
+                            {
+                                <td>No date</td>
+                            }
+                            else
+                            {
+                                <td>@item.DeadLine</td>
+                            }
+                            <td>@item.CategoryName</td>
+                            <td>
+                                <a onclick="CompleteTask('@item.id')">To complete</a>
+                            </td>
+                            <td>
+                                <a onclick="DeleteTask('@item.id')" href="">Del</a>
+                                <a onclick="Updatetask('@item.id','@item.Title','@item.DeadLine','@item.CategoryName')">Edit</a>
+                            </td>
+                        </tr>
+                }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+
