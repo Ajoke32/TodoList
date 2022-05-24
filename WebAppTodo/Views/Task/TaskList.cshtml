@@ -6,7 +6,15 @@
 
 
 
-
+<div class="storage">
+    <form method="post" asp-controller="Task" asp-action="ChangeStorage">
+        <select name="Storage">
+                <option value="DataBase">DataBase</option>
+                <option value="Xml">Xml</option>
+        </select>
+        <input type="submit" value="Add" />
+    </form>
+</div>
 <div class="form">
     <form method="post" asp-controller="Task" asp-action="CreateTask">
         <input placeholder="Task" asp-for="Tasks.Title" required id="Title" />
@@ -123,7 +131,7 @@
             url: '@Url.Action("DeleteTasks","Task")',
             data:{TaskId:id},
             success: function (result) {
-                alert('Successfully received Data ');
+               
             },
             error: function () {
                 alert('Failed to receive the Data');
@@ -133,10 +141,9 @@
     function Updatetask(id,Title,DeadLine,CategoryName){
         let a = new Date();
         let time =`${a.getFullYear()}-0${a.getMonth()}-0${a.getDay()}`;
-        alert(id);
         $('#Taskid').val(id);
         $('#Title').val(Title);
-        $('input[type="datetime-local"]').val(`${time}T14:23`);
+        $('input[type="datetime-local"]').val(`${time}T14:23:00`);
         $('.list').val(CategoryName);
     }
     function CompleteTask(id){

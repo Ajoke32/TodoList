@@ -1,8 +1,150 @@
-﻿@{
+﻿@model WebAppTodo.Models.TaskRepositoryList
+@using WebAppTodo.ModelXml;
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <a href="@Url.Action("Index","Home")">Index</a>
+    <a href="@Url.Action("TaskList","Task")">Data Base</a>
+    <a href="/Home/CategoryXml">Create Task</a>
 </div>
+<div class="form">
+    <form method="post" asp-controller="Home" asp-action="CreateTask">
+        <input type="text"  name="Title" id="Title"/>
+        <input type="hidden" name="Id" id="Taskid" />
+        <input type="datetime-local" placeholder="DeadLine" name="DeadLine" />
+        <select class="list" name="CategoryName">
+            @foreach (var item in @Model.Categories)
+            {
+                <option value="@item.Name">@item.Name</option>
+            }
+        </select>
+        <input type="submit" value="Add" />
+    </form>
+</div>
+<div class="row">
+    <table class="table">
+        <caption>Tasks</caption>
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">DeadLine</th>
+                <th scope="col">Category</th>
+                <th scope="col">Task Complete</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model.Taskes)
+            {
+                if (@item.TaskComplete == 0)
+                {
+                    <tr>
+
+                        <td>@item.id</td>
+                        <td>@item.Title</td>
+
+                        @if (@item.DeadLine == null)
+                        {
+                            <td>No date</td>
+                        }
+                        else
+                        {
+                            <td>@item.DeadLine</td>
+                        }
+
+                    <td>@item.CategoryName</td>
+                    <td>
+                        <a onclick="CompleteTask('@item.id')">To complete</a>
+                    </td>
+                    <td>
+                        <a onclick="DeleteTask('@item.id')">Del</a>
+                        <a onclick="Updatetask('@item.id','@item.Title','@item.DeadLine','@item.CategoryName')">Edit</a>
+                    </td>
+
+                </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>
+<div class="CompletedTask">
+    <table class="table">
+        <caption>Completetd tasks</caption>
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">DeadLine</th>
+                <th scope="col">Category</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        @foreach (var item in @Model.Taskes)
+        {
+            if (@item.TaskComplete == 1)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    @if (@item.DeadLine == null)
+                    {
+                        <td>No date</td>
+                    }
+                    else
+                    {
+                        <td>@item.DeadLine</td>
+                    }
+                    <td>@item.CategoryName</td>
+                    <td><a onclick="DeleteTask('@item.id')">Del</a></td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<script>
+    function DeleteTask(id){
+
+         alert("do you want delete this?");
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DeleteTasks","Home")',
+            data:{TaskId:id},
+            success: function () {
+
+            },
+            error: function () {
+                 window.location.reload();
+            }
+        });
+    }
+    function Updatetask(id,Title,DeadLine,CategoryName){
+        let a = new Date();
+        let time =`${a.getFullYear()}-0${a.getMonth()}-0${a.getDay()}`;
+        $('#Taskid').val(id);
+        $('#Title').val(Title);
+        $('input[type="datetime-local"]').val(`${time}T14:23:00`);
+        $('.list').val(CategoryName);
+    }
+
+    function CompleteTask(id){
+
+
+         $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CompleteTask","Home")',
+            data:{TaskId:id},
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+            }
+        });
+
+    }
+</script>

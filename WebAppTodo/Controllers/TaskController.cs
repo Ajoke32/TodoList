@@ -7,6 +7,8 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore.Query;
 using Dapper;
+using AutoMapper;
+
 
 namespace WebAppTodo.Controllers
 {
@@ -14,11 +16,14 @@ namespace WebAppTodo.Controllers
     {
         private IConfiguration Configuration;
         private ITaskRepository _taskRepository;
-        public TaskController(IConfiguration configuration, ITaskRepository taskRepository)
+
+        public TaskController(IConfiguration configuration, ITaskRepository taskRepository,
+            IServiceProvider provider)
         {
             Configuration = configuration;
-            _taskRepository = taskRepository;
-          
+            _taskRepository = ServicesChanger.GetServices(_taskRepository,provider);
+
+
         }
         public IActionResult Index()
         {
@@ -39,7 +44,6 @@ namespace WebAppTodo.Controllers
         [HttpPost]
         public IActionResult CreateTask(Tasks tasks)
         {
-            TaskRepositoryList model = new TaskRepositoryList();
            
             _taskRepository.CreateTask(tasks);
 
@@ -94,6 +98,13 @@ namespace WebAppTodo.Controllers
             _taskRepository.DeleteCategory(CategoryId);
 
             return Redirect("CateList");
+        }
+        [HttpPost]
+        public IActionResult ChangeStorage(string storage)
+        {
+            Console.WriteLine(storage);
+            StateStore.SetStorage(storage);
+            return Redirect("TaskList");
         }
     }
 }

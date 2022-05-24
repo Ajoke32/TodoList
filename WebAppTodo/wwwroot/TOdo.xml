@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Todolist>
+  <Tasks>
+    <task id="1">
+      <taskId>1</taskId>
+      <Title>Run</Title>
+      <TaskComplete>0</TaskComplete>
+      <DeadLine>2022-05-07T09:10:14</DeadLine>
+      <CategoryName>Sport</CategoryName>
+    </task>
+    <task id="2">
+      <taskId>2</taskId>
+      <Title>Camp</Title>
+      <TaskComplete>0</TaskComplete>
+      <DeadLine>2022-07-07T10:10:14</DeadLine>
+      <CategoryName>Travel</CategoryName>
+    </task>
+    <task id="3">
+      <taskId>3</taskId>
+      <Title>Read</Title>
+      <TaskComplete>1</TaskComplete>
+      <DeadLine>13.04.2022 15:24:00</DeadLine>
+      <CategoryName>Sport</CategoryName>
+    </task>
+    <task id="4">
+      <taskId>4</taskId>
+      <Title>eww</Title>
+      <TaskComplete>1</TaskComplete>
+      <DeadLine>04.05.2022 1:13:00</DeadLine>
+      <CategoryName>Travel</CategoryName>
+    </task>
+  </Tasks>
+  <Categories>
+    <Category id="1">
+      <Id>1</Id>
+      <Name>Sport</Name>
+    </Category>
+    <Category id="2">
+      <Id>2</Id>
+      <Name>Travel</Name>
+    </Category>
+    <Category id="3">
+      <Id>3</Id>
+      <Name>HomeWork</Name>
+    </Category>
+    <Category id="4">
+      <Id>4</Id>
+      <Name>Bike</Name>
+    </Category>
+    <Category id="5">
+      <Id>5</Id>
+      <Name>Clean</Name>
+    </Category>
+  </Categories>
+</Todolist>

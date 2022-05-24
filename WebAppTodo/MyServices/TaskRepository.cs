@@ -135,7 +135,7 @@ namespace WebAppTodo.MyServices
         }
         public void CreateCategory(Category model)
         {
-            Console.WriteLine($"name:{model.Name}id:{model.Id}");
+           
             if (model.Id == 0)
             {
                 using (IDbConnection dbconnection = Connection)

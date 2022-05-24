@@ -1,0 +1,64 @@
+﻿@model WebAppTodo.ModelXml.TaskRepositoryXml;
+@using WebAppTodo.Models;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div class="form">
+    <form method="post" asp-controller="Home" asp-action="CreateCategory">
+    <input placeholder="Category" asp-for="CategoryXml.Name" required id="category"/>
+    <input type="hidden" asp-for="CategoryXml.Id" id="Categoryid"/>
+    <input type="submit" value="Add" />
+    </form>
+</div>
+<div class="row">
+ <table class="table">
+     <thead>
+     <tr>
+         <th scope="col">Title</th>
+         <th scope="col">Action</th>
+     </tr>
+     </thead>
+     <tbody>
+     
+    @foreach(var item in @Model.Categories){
+          <tr>
+            <td>@item.Name</td>
+            <td>
+                <button onclick="DeleteCategory('@item.Id')">Delete</button>
+                <button onclick="UpdateCategory('@item.Id','@item.Name')">Edit</button>
+                </td>
+            
+         </tr>
+         }
+
+    </tbody>
+    </table>
+</div>
+<script>
+    function DeleteCategory(id){
+        
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DeleteCategory","Home")',
+            data:{Id:id},
+            success: function (result) {
+                 alert("do you want delete this?");
+                window.location.reload();
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+            }
+        });
+    }
+    function UpdateCategory(Categoryid,CategoryName){
+        alert(Categoryid);
+        $('#Categoryid').val(Categoryid);
+        $('#category').val(CategoryName);
+    }
+</script>
+
