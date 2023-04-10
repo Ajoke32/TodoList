@@ -1,0 +1,56 @@
+﻿
+.task-container{
+    font-size:18px;
+    margin:50px auto;
+    display:flex;
+    min-height:500px;
+    flex-direction:column;
+    width:800px;
+    justify-content:space-between;
+}
+.tasks {
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+.task{
+    display:flex;
+    justify-content:space-between;
+}
+.task span{
+    width:200px;
+}
+.remove:hover{
+    color:red;
+}
+.update:hover{
+    color:greenyellow;
+}
+s{
+    text-decoration-color:lightgray;
+}
+.task-container>form{
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+}
+.incon{
+    width:fit-content !important;
+    cursor:pointer;
+}
+input,select{
+    height:35px;
+    border:1px solid lightgray;
+    border-radius:3px;
+    outline:none;
+}
+.task>form button{
+    background:none;
+    outline:none;
+    border:none;
+}
+.group {
+    display: flex;
+    flex-direction: column;
+}
+

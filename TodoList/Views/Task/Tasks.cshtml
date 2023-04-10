@@ -1,0 +1,25 @@
+﻿@model TaskViewModel
+
+<div class="task-container">
+    <div class="tasks">
+        @await Component.InvokeAsync("TaskList")
+    </div>
+    <form asp-action="Tasks" asp-controller="Task" method="post">
+        <div class="group">
+            <input type="text" asp-for="Title" placeholder="Task name"  />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="group">
+            <input asp-for="ExpirationDate"  type="datetime-local" />
+        </div>
+
+        <div class="group">
+            @await Component.InvokeAsync("CategoryList")
+        </div>
+        <div class="group">
+            <input type="submit" value="Add task" />
+        </div>
+    </form>
+</div>
+
+

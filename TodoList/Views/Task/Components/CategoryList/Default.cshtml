@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Category>
+
+<select name="CategoryId">
+    @foreach (var category in Model)
+    {
+        if (category.Title == "Other")
+        {
+            <option id="@category.Id" selected value="@category.Id">@category.Title</option>
+            continue;
+        }
+        <option id="@category.Id" selected value="@category.Id">@category.Title</option>
+    }
+</select>

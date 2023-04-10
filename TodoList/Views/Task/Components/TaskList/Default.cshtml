@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TaskViewModel>
+
+@{
+    bool isComplete = false;
+}
+
+@foreach (var item in Model)
+{
+    <div class="task">
+
+        @if (item.IsCompleted)
+        {
+            <span><s>@item.Title</s></span>
+            <span><s>@item.ExpirationDate</s></span>
+        }
+        else
+        {
+            <span>@item.Title</span>
+            <span>@item.ExpirationDate</span>
+        }
+
+        @using (Html.BeginForm("Delete", "Task", new { id = item.Id }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <button class="remove icon"><i class="bi bi-trash" style="font-size:22px;"></i></button>
+        }
+
+        @{
+            isComplete = item.IsCompleted ? false : true;
+        }
+        @using (Html.BeginForm("Update", "Task", new { Id = item.Id,IsCompleted=isComplete,CategoryId=item.CategoryId,Title=item.Title,ExpirationDate=item.ExpirationDate }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @if (!isComplete)
+            {
+                <button class="update icon"><i class="bi bi-arrow-counterclockwise" style="font-size:22px;"></i></button>
+            }
+            else
+            {
+
+                <button class="update icon"><i class="bi bi-check-lg" style="font-size:22px;"></i></button>
+            }
+        }
+
+    </div>
+}
