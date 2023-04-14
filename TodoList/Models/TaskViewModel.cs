@@ -7,11 +7,8 @@ namespace TodoList.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="Title field is required")]
-        [NotNull]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime? ExpirationDate { get; set; }
 
         public bool IsCompleted { get; set; } 

@@ -17,7 +17,7 @@ namespace TodoList.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
             var categories = await _categoryRepository.GetAllCategoriesAsync();
 

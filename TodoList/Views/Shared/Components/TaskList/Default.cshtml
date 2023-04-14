@@ -1,8 +1,6 @@
-﻿@model IEnumerable<TaskViewModel>
+﻿@using TodoList.Models.DTOs.DisplayDtos;
 
-@{
-    bool isComplete = false;
-}
+@model IEnumerable<DisplayTaskViewModel>
 
 @foreach (var item in Model)
 {
@@ -18,26 +16,22 @@
             <span>@item.Title</span>
             <span>@item.ExpirationDate</span>
         }
-
-        @using (Html.BeginForm("Delete", "Task", new { id = item.Id }, FormMethod.Post))
+        <span style="color:#a3cef1;text-align:center;">@item.CategoryName</span>
+        @using (Html.BeginForm("Remove", "Task", new { id = item.Id }, FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             <button class="remove icon"><i class="bi bi-trash" style="font-size:22px;"></i></button>
         }
 
-        @{
-            isComplete = item.IsCompleted ? false : true;
-        }
-        @using (Html.BeginForm("Update", "Task", new { Id = item.Id,IsCompleted=isComplete,CategoryId=item.CategoryId,Title=item.Title,ExpirationDate=item.ExpirationDate }, FormMethod.Post))
+        @using (Html.BeginForm("UpdateState", "Task", new { id = item.Id,state=item.IsCompleted ? false : true}, FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-            @if (!isComplete)
+            @if (item.IsCompleted)
             {
                 <button class="update icon"><i class="bi bi-arrow-counterclockwise" style="font-size:22px;"></i></button>
             }
             else
             {
-
                 <button class="update icon"><i class="bi bi-check-lg" style="font-size:22px;"></i></button>
             }
         }

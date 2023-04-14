@@ -64,7 +64,7 @@ artifacts/
 
 # Tye
 .tye/
-
+bin/
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
@@ -78,6 +78,7 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+*.bin
 *.iobj
 *.pch
 *.pdb
@@ -375,7 +376,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-
+*.idea
+*.vscode
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 

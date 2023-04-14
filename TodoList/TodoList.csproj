@@ -8,8 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="Automapper" Version="12.0.1" />
+    <PackageReference Include="Automapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Task\Components\CategoryList\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Task\Components\TaskList\Default.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Shared\Components\CategoryList\Default.cshtml" />
+    <AdditionalFiles Include="Views\Shared\Components\TaskList\Default.cshtml" />
   </ItemGroup>
 
 </Project>
