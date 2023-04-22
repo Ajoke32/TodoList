@@ -9,7 +9,7 @@ namespace TodoList.Models.DTOs.DisplayDtos
 		
 		public string? CategoryName {get;set;}
 		
-		public DateTime ExpirationDate{get;set;}
+		public DateTime? ExpirationDate{get;set;}
 		
 		public bool IsCompleted {get;set;}
 		

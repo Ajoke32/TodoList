@@ -5,6 +5,8 @@ using TodoList.Interfaces;
 using TodoList.Models;
 using AutoMapper;
 using TodoList.Models.InputDTOs;
+using TodoList.Utils.Enums;
+using TodoList.Utils;
 
 namespace TodoList.Controllers
 {
@@ -15,9 +17,9 @@ namespace TodoList.Controllers
 		private ITaskRepository _taskRepository;
 
 		private readonly IMapper _mapper;
-		public TaskController(ITaskRepository repository,IMapper mapper)
+		public TaskController(IMapper mapper,IConfiguration configuration)
 		{
-			_taskRepository = repository;
+			_taskRepository = StorageChanger.GetTaskRepository(configuration);
 			_mapper = mapper;
 		}
 
@@ -67,6 +69,12 @@ namespace TodoList.Controllers
 		public  IActionResult Tasks()
 		{
 			return View();
+		}
+		
+		public IActionResult ChangeStore()
+		{
+			StorageChanger.ChangeState();
+			return RedirectToAction("Tasks");
 		}
 
 	}

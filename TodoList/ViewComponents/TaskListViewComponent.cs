@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using TodoList.Interfaces;
 using AutoMapper;
 using TodoList.Models;
+using TodoList.Utils.Enums;
+using TodoList.Utils;
 
 namespace TodoList.ViewComponents
 {
@@ -12,9 +14,9 @@ namespace TodoList.ViewComponents
 		private ITaskRepository _taskRepository;
 
 		private IConfiguration _configuration;
-		public TaskListViewComponent(ITaskRepository taskRepo, IConfiguration configuration)
+		public TaskListViewComponent(IConfiguration configuration)
 		{
-			_taskRepository = taskRepo;
+			_taskRepository = StorageChanger.GetTaskRepository(configuration);
 			_configuration = configuration;
 		}
 
