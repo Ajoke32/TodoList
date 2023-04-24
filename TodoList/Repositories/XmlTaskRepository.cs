@@ -14,11 +14,13 @@ namespace TodoList.Repositories
 {
 	public class XmlTaskRepository : ITaskRepository
 	{
+		
 		private string path = Directory.GetCurrentDirectory() + "/Tasks.xml";
 		public Task AddTaskAsync(TaskViewModel task)
 		{
 			StreamReader reader = new StreamReader(path);
 			var tasks = reader.Deserialize<TaskViewModel>().ToList();
+			task.Id = tasks.Count+1;
 			tasks.Add(task);
 			StreamWriter wr = new StreamWriter(path);
 			return wr.SaveAsync(tasks);
@@ -36,7 +38,7 @@ namespace TodoList.Repositories
 		public Task<List<TaskViewModel>> GetAllTasksAsync()
 		{
 			StreamReader sr = new StreamReader(path);
-			List<TaskViewModel> tasks = sr.Deserialize<TaskViewModel>().ToList();
+			List<TaskViewModel> tasks = sr.Deserialize<TaskViewModel>().OrderBy(t=>t.IsCompleted==true).ToList();
 			return Task.Run(() => tasks);
 		}
 
@@ -65,7 +67,7 @@ namespace TodoList.Repositories
 				});
 			}
 
-			return Task.Run(() => list);
+			return Task.Run(() => list.OrderBy(t=>t.IsCompleted).ToList());
 		}
 
 		public async Task UpdateCompletionState(bool state, int id)
