@@ -1,6 +1,10 @@
 using TodoList.Interfaces;
 using TodoList.Repositories;
-
+using TodoList.GraphQL.AppSchema;
+using GraphQL;
+using GraphQL.SystemTextJson;
+using GraphQL.Types;
+using TodoList.GraphQL.Mutations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +33,19 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(serv =>
 	}
 	return new CategoryRepository(connectionString);
 });
+builder.Services.AddScoped<TaskSchema>();
+builder.Services.AddTransient<TaskMutation>();
+
+
+builder.Services.AddGraphQL((options)=>
+{
+	options.AddSchema<TaskSchema>();
+	options.AddGraphTypes();
+	options.AddErrorInfoProvider(e=>e.ExposeExceptionDetails=true);
+	options.AddSystemTextJson();
+});
+
+
 
 
 var app = builder.Build();
@@ -43,11 +60,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseGraphQLAltair();
+app.UseGraphQL();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.MapGraphQLAltair("/ui/graphql");
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Task}/{action=Tasks}");

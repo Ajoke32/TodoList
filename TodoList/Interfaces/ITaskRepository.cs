@@ -7,7 +7,7 @@ namespace TodoList.Interfaces
 	{
 		public Task AddTaskAsync(TaskViewModel task);
 
-		public Task UpdateTaskAsync(TaskViewModel task);
+		public Task UpdateTaskAsync(TaskViewModel task,int id);
 
 		public Task DeleteTaskAsync(int id);
 

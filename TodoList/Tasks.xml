@@ -8,20 +8,6 @@
     <CategoryId>7</CategoryId>
   </TaskViewModel>
   <TaskViewModel>
-    <Id>4</Id>
-    <Title>Tereq</Title>
-    <ExpirationDate>2023-04-28T16:32:00</ExpirationDate>
-    <IsCompleted>false</IsCompleted>
-    <CategoryId>3</CategoryId>
-  </TaskViewModel>
-  <TaskViewModel>
-    <Id>5</Id>
-    <Title>Asczx</Title>
-    <ExpirationDate>2023-04-25T16:31:00</ExpirationDate>
-    <IsCompleted>false</IsCompleted>
-    <CategoryId>5</CategoryId>
-  </TaskViewModel>
-  <TaskViewModel>
     <Id>3</Id>
     <Title>SCZasd</Title>
     <ExpirationDate>2023-04-24T14:30:00</ExpirationDate>
@@ -34,5 +20,12 @@
     <ExpirationDate xsi:nil="true" />
     <IsCompleted>false</IsCompleted>
     <CategoryId>7</CategoryId>
+  </TaskViewModel>
+  <TaskViewModel>
+    <Id>4</Id>
+    <Title>Tereq</Title>
+    <ExpirationDate>2023-04-28T16:32:00</ExpirationDate>
+    <IsCompleted>true</IsCompleted>
+    <CategoryId>3</CategoryId>
   </TaskViewModel>
 </Root>

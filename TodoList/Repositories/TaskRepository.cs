@@ -65,12 +65,19 @@ namespace TodoList.Repositories
 			await connection.ExecuteAsync("update Tasks set IsCompleted=@IsCompleted where Id=@Id", new { IsCompleted = state, Id = id });
 		}
 
-		public async Task UpdateTaskAsync(TaskViewModel task)
+		public async Task UpdateTaskAsync(TaskViewModel task,int id)
 		{
 			using var connection = new SqlConnection(_connectionString);
 
 			await connection.ExecuteAsync("update Tasks set Title = @Title ,CategoryId=@CategoryId,ExpirationDate=@ExpirationDate," +
-				"IsCompleted = @IsCompleted where Id=@Id", task);
+				"IsCompleted = @IsCompleted where Id=@Id", new 
+				{
+					Id=id,
+					Title = task.Title,
+					CategoryId = task.CategoryId,
+					ExpirationDate = task.ExpirationDate,
+					IsCompleted = task.IsCompleted
+				});
 		}
 	}
 }

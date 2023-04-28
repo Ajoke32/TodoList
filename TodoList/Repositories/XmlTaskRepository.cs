@@ -79,10 +79,10 @@ namespace TodoList.Repositories
 			await wr.SaveAsync(tasks);
 		}
 
-		public async Task UpdateTaskAsync(TaskViewModel task)
+		public async Task UpdateTaskAsync(TaskViewModel task,int id)
 		{
 			var tasks = await GetAllTasksAsync();
-			TaskViewModel searchTask = tasks.FirstOrDefault(t => t.Id == task.Id);
+			TaskViewModel searchTask = tasks.FirstOrDefault(t => t.Id == id);
 			searchTask = task;
 			StreamWriter wr = new StreamWriter(path);
 			await wr.SaveAsync(tasks);

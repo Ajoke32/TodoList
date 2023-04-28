@@ -32,10 +32,10 @@ namespace TodoList.Controllers
 		
 		
 		[HttpPost]
-		public async Task<IActionResult> Update(TaskInputViewModel task)
+		public async Task<IActionResult> Update(TaskInputViewModel task,int id)
 		{
 			var _task = _mapper.Map<TaskViewModel>(task);
-			await _taskRepository.UpdateTaskAsync(_task);
+			await _taskRepository.UpdateTaskAsync(_task,id);
 			return RedirectToAction("Tasks");
 		}
 
