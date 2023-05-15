@@ -6,6 +6,7 @@ using TodoList.GraphQL.GrapthQLTypes.InputTypes;
 using TodoList.Interfaces;
 using TodoList.Models;
 using TodoList.Models.InputDTOs;
+using TodoList.Utils;
 
 #pragma warning disable CS0618
 
@@ -13,8 +14,10 @@ namespace TodoList.GraphQL.Mutations
 {
 	public class TaskMutation : ObjectGraphType
 	{
-		public TaskMutation(ITaskRepository repository)
+		private ITaskRepository _repository;
+		public TaskMutation(ITaskRepository repos)
 		{
+		    _repository = repos;	
 			FieldAsync<TaskType>(
 			  "createTask",
 			  arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TaskInputType>>(){Name="task"}),
@@ -22,8 +25,7 @@ namespace TodoList.GraphQL.Mutations
 			   resolve:async context=>
 			   {
 			   	 var task = context.GetArgument<TaskViewModel>("task");
-				 
-				 await repository.AddTaskAsync(task);
+				 await _repository.AddTaskAsync(task);
 				 
 				 return task;
 			   }
@@ -40,7 +42,7 @@ namespace TodoList.GraphQL.Mutations
 					{
 						return $"taskId argument missing";
 					}
-					await repository.DeleteTaskAsync(id);
+					await _repository.DeleteTaskAsync(id);
 					return $"task with id {id} deleted";
 				}
 			);
@@ -51,10 +53,21 @@ namespace TodoList.GraphQL.Mutations
 				resolve:async context =>
 				{
 					var task = context.GetArgument<TaskViewModel>("task");
-					await repository.UpdateTaskAsync(task,task.Id);
+					await  _repository.UpdateTaskAsync(task,task.Id);
 					
-					return await repository.GetTaskByIdAsync(task.Id);
+					return await _repository.GetTaskByIdAsync(task.Id);
 				}
+			);
+			
+			
+			Field<StringGraphType>(
+			"changeStore",
+			resolve: (context) =>
+			{
+				StorageState.ChangeState();
+				var state = StorageState.GetState();
+				return $"Store changed to {state}";
+			}
 			);
 			
 		}

@@ -17,9 +17,9 @@ namespace TodoList.Controllers
 		private ITaskRepository _taskRepository;
 
 		private readonly IMapper _mapper;
-		public TaskController(IMapper mapper,IConfiguration configuration)
+		public TaskController(IMapper mapper,IConfiguration configuration,TaskRepositoryManager manager)
 		{
-			_taskRepository = StorageChanger.GetTaskRepository(configuration);
+			_taskRepository = manager.GetTaskRepository();
 			_mapper = mapper;
 		}
 
@@ -73,7 +73,7 @@ namespace TodoList.Controllers
 		
 		public IActionResult ChangeStore()
 		{
-			StorageChanger.ChangeState();
+			StorageState.ChangeState();
 			return RedirectToAction("Tasks");
 		}
 

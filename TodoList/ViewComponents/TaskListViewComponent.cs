@@ -14,9 +14,9 @@ namespace TodoList.ViewComponents
 		private ITaskRepository _taskRepository;
 
 		private IConfiguration _configuration;
-		public TaskListViewComponent(IConfiguration configuration)
+		public TaskListViewComponent(IConfiguration configuration,TaskRepositoryManager manager)
 		{
-			_taskRepository = StorageChanger.GetTaskRepository(configuration);
+			_taskRepository = manager.GetTaskRepository();
 			_configuration = configuration;
 		}
 

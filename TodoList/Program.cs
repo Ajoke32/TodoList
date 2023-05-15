@@ -2,9 +2,11 @@ using TodoList.Interfaces;
 using TodoList.Repositories;
 using TodoList.GraphQL.AppSchema;
 using GraphQL;
-using GraphQL.SystemTextJson;
-using GraphQL.Types;
 using TodoList.GraphQL.Mutations;
+using TodoList.Utils;
+using TodoList.GraphQL.Schemes;
+using TodoList.GraphQL.Queries;
+using GraphQL.Server.Transports.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,15 +15,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddTransient<ITaskRepository, TaskRepository>(serv =>
+builder.Services.AddSingleton<TaskRepositoryManager>();
+
+
+builder.Services.AddTransient<ITaskRepository>(serv=>
 {
-	IConfiguration configuration =  serv.GetRequiredService<IConfiguration>();
-	string? connectionString = configuration.GetConnectionString("DefaultConnection");
-	if (connectionString == null)
-	{
-		throw new Exception("Connecion string is not set up");
-	}
-	return new TaskRepository(connectionString);
+	var repo = serv.GetRequiredService<TaskRepositoryManager>();
+	return repo.GetTaskRepository();
 });
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(serv =>
 {
@@ -33,22 +33,28 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(serv =>
 	}
 	return new CategoryRepository(connectionString);
 });
-builder.Services.AddScoped<TaskSchema>();
-builder.Services.AddTransient<TaskMutation>();
 
+
+builder.Services.AddScoped<TaskQuery>();
+builder.Services.AddScoped<TaskMutation>();
+builder.Services.AddScoped<CategoryQuery>();
+builder.Services.AddScoped<CategoryMutation>();
 
 builder.Services.AddGraphQL((options)=>
 {
-	options.AddSchema<TaskSchema>();
-	options.AddGraphTypes();
-	options.AddErrorInfoProvider(e=>e.ExposeExceptionDetails=true);
-	options.AddSystemTextJson();
+	
+	options.AddSchema<TaskSchema>(serviceLifetime:GraphQL.DI.ServiceLifetime.Scoped)
+	.AddSchema<CategorySchema>(serviceLifetime:GraphQL.DI.ServiceLifetime.Scoped)
+	.AddGraphTypes()
+	.AddErrorInfoProvider(e=>e.ExposeExceptionDetails=true)
+	.AddSystemTextJson();
 });
 
 
 
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -62,10 +68,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseGraphQLAltair();
 app.UseGraphQL();
+app.MapGraphQL<TaskSchema>("tasks");
+app.MapGraphQL<CategorySchema>("category");
 app.UseRouting();
 
 app.UseAuthorization();
-app.MapGraphQLAltair("/ui/graphql");
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Task}/{action=Tasks}");
