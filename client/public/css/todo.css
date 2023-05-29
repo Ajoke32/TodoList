@@ -1,0 +1,59 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+.todo-item{
+    font-size: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.todo-container{
+    margin: 60px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+#delete,#complete,#undo-complete{
+    transition: 0.1s;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#complete:hover{
+    color: lime;
+}
+#delete:hover{
+    color: red;
+}
+#undo-complete:hover{
+    color: #7bbbff;
+}
+
+#todo-create{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 35%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+#todo-create input:not(input[type='submit']){
+    outline: none;
+    border: none;
+    padding: 5px;
+    border-bottom: 1px solid lightgray;
+}
+.try{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.completed{
+    text-decoration: line-through;
+}
