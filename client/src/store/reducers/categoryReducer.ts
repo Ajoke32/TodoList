@@ -12,6 +12,7 @@ export const categoryReducer = (categoryState:CategoryState=initialState,action:
         case CategoryActionTypes.CREATE_CATEGORY:{
             return {...categoryState,categories:[...categoryState.categories,action.payload]}
         }
+
         default:return categoryState;
     }
 }

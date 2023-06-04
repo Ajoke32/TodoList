@@ -1,6 +1,11 @@
-import thunk from "redux-thunk";
 import {applyMiddleware, createStore} from "redux";
-import {rootReducer} from "./reducers";
+import {rootEpic, rootReducer} from "./reducers";
+import {createEpicMiddleware, EpicMiddleware} from 'redux-observable';
+import {TodoAction} from "../types/todo";
 
+const epicMiddleware:EpicMiddleware<TodoAction> = createEpicMiddleware<TodoAction>();
 
-export const store = createStore(rootReducer,applyMiddleware(thunk));
+export const store = createStore(rootReducer,applyMiddleware(epicMiddleware));
+
+epicMiddleware.run(rootEpic)
+export const AppDispatch = store.dispatch;

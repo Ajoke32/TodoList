@@ -2,31 +2,40 @@ import {TodoAction, TodoActionTypes, TodoState} from "../../types/todo";
 
 
 const initialState:TodoState = {
-    todos:[]
+    todos:[],
+    loading:true,
+    error:false
 }
 
 export const todoReducer = (state:TodoState=initialState,action:TodoAction):TodoState=>{
    switch (action.type){
-       case TodoActionTypes.CREATE_TODO:{
-           return {...state,todos:[...state.todos,action.payload]}
-       }
-       case TodoActionTypes.UPDATE_TODO:{
-           state.todos.map(t=>{
-               if(t.id===action.payload.id){
-                   t = action.payload
-               }
-               return t;
-           });
-           return {...state,todos:[...state.todos]}
-       }
-       case TodoActionTypes.DELETE_TODO:{
+       case TodoActionTypes.DELETE_TODO_SUCCESS:{
            return {...state,todos:state.todos.filter(t=>{
                   return t.id!==action.payload
                })}
        }
+
        case TodoActionTypes.GET_TODO_BY_ID:{
            return {...state,todos:state.todos.filter(t=>t.id===action.payload)}
        }
+       case TodoActionTypes.FETCH_TODOS:{
+           return {...state,loading:true}
+       }
+       case TodoActionTypes.FETCH_TODOS_SUCCESS:{
+           return {...state,todos:action.payload,loading:false}
+       }
+
+
+
+       case TodoActionTypes.UPDATE_TODO_FAIL:{
+           return {...state,loading:false,error:true}
+       }
+       case TodoActionTypes.UPDATE_TODO_SUCCESS:{
+           const index = state.todos.findIndex(t=>t.id===action.payload.id);
+           state.todos[index]=action.payload;
+           return {...state,todos:[...state.todos]}
+       }
+
        default: return state;
    }
 }
