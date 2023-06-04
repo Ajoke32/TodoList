@@ -1,6 +1,8 @@
 using System;
 using GraphQL;
+using GraphQL.Introspection;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Mvc.Filters;
 using TodoList.GraphQL.GrapthQLTypes;
 using TodoList.Interfaces;
 using TodoList.Models;
@@ -10,23 +12,25 @@ using TodoList.Utils;
 
 namespace TodoList.GraphQL.Queries
 {
-
-	public class TaskQuery : ObjectGraphType
+	public class SomeType
 	{
-		private ITaskRepository _repository;
+		public List<string> Titels { get; set; }
+	}
+
+	public sealed class TaskQuery : ObjectGraphType
+	{
 		public TaskQuery(ITaskRepository repos)
 		{
+			var repository = repos;
 			
-			_repository = repos;
-		 
+			
 			FieldAsync<ListGraphType<TaskType>>("tasks",
 			 "gets all task",
-			 resolve: async context =>
-			 {
-				 return await _repository.GetAllTasksAsync();
-			 }
-			);
+			 resolve: async context => await repository.GetAllTasksAsync());
 
+
+		
+			
 			FieldAsync<TaskType>("task", "gets task by id",
 			arguments: new QueryArguments(
 			 new QueryArgument<NonNullGraphType<IdGraphType>>()
@@ -40,7 +44,7 @@ namespace TodoList.GraphQL.Queries
 				TaskViewModel? task = null;
 				try
 				{
-					task = await _repository.GetTaskByIdAsync(id);
+					task = await repository.GetTaskByIdAsync(id);
 				}
 				catch
 				{

@@ -10,6 +10,15 @@ using GraphQL.Server.Transports.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name:MyAllowSpecificOrigins,c =>
+	{
+		c.WithOrigins("http://localhost:3000/").AllowAnyHeader().AllowAnyMethod().AllowAnyHeader();
+	});
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -33,6 +42,8 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(serv =>
 	}
 	return new CategoryRepository(connectionString);
 });
+
+
 
 
 builder.Services.AddScoped<TaskQuery>();
@@ -65,13 +76,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
-app.UseGraphQLAltair();
-app.UseGraphQL();
+
+app.UseGraphQLAltair("/ui/graphql")
+	.UseGraphQL();
+
 app.MapGraphQL<TaskSchema>("tasks");
 app.MapGraphQL<CategorySchema>("category");
 app.UseRouting();
-
+app.UseCors(o =>o.WithOrigins("http://localhost:3000/").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
