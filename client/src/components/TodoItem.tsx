@@ -25,7 +25,7 @@ const TodoItem = (props:Todo) => {
     return (
         <div className={`todo-item ${props.isCompleted ? 'completed' : ''}`}>
             <div >{props.title}</div>
-            <div >{props.categoryName}</div>
+            <div >{props.categoryId}</div>
             <div>{props.expirationDate==null?<AiOutlineFieldTime />:props.expirationDate.toString()}</div>
             <div id="delete" className="clickable" onClick={()=>onDeleteClick(props.id)}><AiOutlineDelete /></div>
             {props.isCompleted?<div className="clickable" id="undo-complete" onClick={()=>toComplete(props.id)}> <AiOutlineUndo /> </div>:

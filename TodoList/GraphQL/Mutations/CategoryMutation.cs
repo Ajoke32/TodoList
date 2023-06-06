@@ -22,10 +22,8 @@ namespace TodoList.GraphQL.Mutations
 			   resolve:async context=>
 			   {
 			   	 var category = context.GetArgument<Category>("category");
-				 
-				 await _repository.CreateAsync(category);
-
-				 return category;
+			     
+				 return await _repository.CreateAsync(category);
 			   }
 			);
 			

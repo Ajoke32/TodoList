@@ -1,8 +1,11 @@
-import {combineReducers} from "redux";
+import { combineReducers} from "redux";
 import {todoReducer} from "./todoReducer";
 import {categoryReducer} from "./categoryReducer";
-import {combineEpics, Epic} from "redux-observable";
-import {deleteTodoEpic, fetchTodosEpic, updateTodoEpic} from "../epics/todo"
+import {combineEpics} from "redux-observable";
+import * as t from "../epics/todo"
+import * as c from "../epics/category";
+
+
 
 
 export const rootReducer = combineReducers({
@@ -10,10 +13,9 @@ export const rootReducer = combineReducers({
     categories:categoryReducer
 });
 
-export const rootEpic = combineEpics(
-    fetchTodosEpic
-    ,updateTodoEpic,
-    deleteTodoEpic
+export const rootEpic = combineEpics<any>(
+    ...Object.values(t),
+    ...Object.values(c)
 )
 
 

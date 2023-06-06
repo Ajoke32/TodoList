@@ -7,7 +7,7 @@ namespace TodoList.Interfaces
 	{
 		public Task<List<Category>> GetAllCategoriesAsync();
 		
-		public Task CreateAsync(Category category);
+		public Task<Category> CreateAsync(Category category);
 		
 		public Task<Category> GetCategoryById(int id);
 		

@@ -1,37 +1,39 @@
+import {ActionWithPayload} from "./todo";
 
 export interface Category{
     id:number,
-    name:string
+    title:string
 }
 
 export interface CategoryState{
     categories:Category[],
+    error:string,
+    isLoaded:boolean
 }
 
 export enum CategoryActionTypes{
-    CREATE_CATEGORY="CREATE_CATEGORY",
-    UPDATE_CATEGORY="UPDATE_CATEGORY",
-    DELETE_CATEGORY="DELETE_CATEGORY",
-    GET_CATEGORY_BY_NAME="GET_CATEGORY_BY_NAME",
+    FETCH_CATEGORIES = "FETCH_CATEGORIES",
+    FETCH_CATEGORIES_SUCCESS = "FETCH_CATEGORIES_SUCCESS",
+    FETCH_CATEGORIES_FAIL = "FETCH_CATEGORIES_FAIL",
+
+    CREATE_CATEGORY = "CREATE_CATEGORY",
+    CREATE_CATEGORY_SUCCESS = "CREATE_CATEGORY_SUCCESS",
+    CREATE_CATEGORY_FAIL = "CREATE_CATEGORY_FAIL",
 }
 
 interface CreateCategoryAction{
     type:CategoryActionTypes.CREATE_CATEGORY,
-    payload:Category
+    payload:string
 }
 
-interface GetCategoryByName{
-    type:CategoryActionTypes.GET_CATEGORY_BY_NAME,
-    payload:Category|null
+
+
+interface ActionWithoutPayload<T>{
+    type:T
 }
 
-interface DeleteCategoryAction{
-    type:CategoryActionTypes.DELETE_CATEGORY,
-    payload:number
-}
-interface UpdateCategoryAction{
-    type:CategoryActionTypes.UPDATE_CATEGORY,
-    payload:Category
-}
-
-export type CategoryAction = DeleteCategoryAction|CreateCategoryAction|UpdateCategoryAction|GetCategoryByName;
+export type CategoryAction =|CreateCategoryAction|ActionWithoutPayload<CategoryActionTypes.FETCH_CATEGORIES>|
+    ActionWithPayload<CategoryActionTypes.FETCH_CATEGORIES_SUCCESS,Category[]>|
+    ActionWithPayload<CategoryActionTypes.FETCH_CATEGORIES_FAIL, string>|
+    ActionWithPayload<CategoryActionTypes.CREATE_CATEGORY_SUCCESS, Category>|
+    ActionWithPayload<CategoryActionTypes.CREATE_CATEGORY_FAIL,string>;

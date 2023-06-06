@@ -25,9 +25,7 @@ namespace TodoList.GraphQL.Mutations
 			   resolve:async context=>
 			   {
 			   	 var task = context.GetArgument<TaskViewModel>("task");
-				 await _repository.AddTaskAsync(task);
-				 
-				 return task;
+			     return await _repository.AddTaskAsync(task);
 			   }
 			);
 			

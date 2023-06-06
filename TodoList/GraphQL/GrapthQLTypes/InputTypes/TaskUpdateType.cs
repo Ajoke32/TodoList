@@ -10,7 +10,7 @@ namespace TodoList.GraphQL.GrapthQLTypes.InputTypes
 			Name = "updateTask";
 			Field<NonNullGraphType<IntGraphType>>("id");
 			Field<NonNullGraphType<StringGraphType>>("title");
-			Field<DateGraphType>("expirationDate");
+			Field<DateTimeGraphType>("expirationDate");
 			Field<NonNullGraphType<IntGraphType>>("categoryId");
 			Field<NonNullGraphType<BooleanGraphType>>("isCompleted");
 		}

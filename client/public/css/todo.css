@@ -70,7 +70,7 @@ body{
     padding: 5px;
     border-bottom: 1px solid lightgray;
 }
-#todo-create input[type='submit']{
+#todo-create input[type='submit'],button{
     flex-grow: 1;
     cursor: pointer;
     border: 1px solid lightgray;
@@ -91,4 +91,11 @@ body{
 }
 .completed{
     text-decoration: line-through;
+}
+
+.display-none{
+    display:none;
+}
+.display{
+    display: block;
 }

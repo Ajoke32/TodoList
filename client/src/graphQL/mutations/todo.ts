@@ -1,17 +1,37 @@
 import {gql} from "@apollo/client";
 
-export const updateTaskMutation = gql`mutation UpdateTask($task:updateTask!){
-  updateTask(task: $task){
-    id,
-    categoryId,
-    title,
-    isCompleted,
-    expirationDate
+export const updateTaskMutation = gql`mutation UpdateTask($task:updateTask!) {
+  todo {
+    updateTask(
+      task: $task
+    ) {
+      id
+      title
+      expirationDate
+      isCompleted
+      categoryId
+    }
   }
 }`
 
 export const removeTaskMutation = gql`
 mutation RemoveTask($id:Int!) {
-  removeTask(taskId: $id)
+  todo{
+    removeTask(taskId:$id)
+  }
+}
+`
+
+export const createTaskMutations = gql`
+mutation CreateTask($task:taskInput!){
+  todo{
+    createTask(task: $task) {
+    id
+    title
+    expirationDate
+    isCompleted
+    categoryId
+    }
+  }
 }
 `
