@@ -26,11 +26,13 @@ namespace TodoList.Repositories
 		}
 
 
-		public async Task AddTaskAsync(TaskViewModel task)
+		public async Task<TaskViewModel> AddTaskAsync(TaskViewModel task)
 		{
 			using var connection = new SqlConnection(_connectionString);
-			await connection.ExecuteAsync("insert into Tasks(Title,CategoryId,ExpirationDate)" +
-				"values (@Title, @CategoryId, @ExpirationDate)", task);
+			
+			return await connection.QuerySingleAsync<TaskViewModel>("insert into Tasks(Title,CategoryId,ExpirationDate)" +
+				"output inserted.id,inserted.Title,inserted.ExpirationDate,inserted.IsCompleted,inserted.CategoryId" +
+				" values (@Title, @CategoryId, @ExpirationDate)", task);
 		}
 
 		public async Task DeleteTaskAsync(int id)

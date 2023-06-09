@@ -1,43 +1,65 @@
-import {Dispatch} from "react";
 import {Todo, TodoAction, TodoActionTypes} from "../../types/todo";
 
 
-export const createTodo = (todo:Todo)=>{
-     return (dispatch:Dispatch<TodoAction>)=>{
-         try {
-             dispatch({type:TodoActionTypes.CREATE_TODO,payload:todo})
-         }catch (e){
-             console.log(e);
-         }
-     }
-}
+// remove
+export const removeTodo = (id:number):TodoAction=>({
+        type:TodoActionTypes.DELETE_TODO,
+        payload:id
+});
 
-export const removeTodo = (id:number)=>{
-    return (dispatch:Dispatch<TodoAction>)=>{
-        try {
-            dispatch({type:TodoActionTypes.DELETE_TODO,payload:id})
-        }catch (e){
-            console.log(e);
-        }
-    }
-}
+export const removeTodoSuccess = (id:number):TodoAction => ({
+    type:TodoActionTypes.DELETE_TODO_SUCCESS,
+    payload:id
+});
+//remove
 
-export const getTodoById = (id:number)=>{
-    return (dispatch:Dispatch<TodoAction>)=>{
-        try {
-            dispatch({type:TodoActionTypes.GET_TODO_BY_ID,payload:id})
-        }catch (e){
-            console.log(e);
-        }
-    }
-}
 
-export const updateTodo = (todo:Todo) =>{
-    return (dispatch:Dispatch<TodoAction>)=>{
-        try {
-            dispatch({type:TodoActionTypes.UPDATE_TODO,payload:todo})
-        }catch (e){
-            console.log(e);
-        }
+//fetch
+export const fetchTodo = ():TodoAction=>(
+    {
+        type:TodoActionTypes.FETCH_TODOS,
+        payload:"Fetching"
     }
-}
+);
+
+export const fetchTodoSuccess = (todos:Todo[]):TodoAction =>({
+    type:TodoActionTypes.FETCH_TODOS_SUCCESS,
+    payload:todos
+});
+//fetch
+
+
+
+// update
+export const updateTodoSuccess = (todo:Todo):TodoAction =>({
+    type:TodoActionTypes.UPDATE_TODO_SUCCESS,
+    payload:todo
+});
+
+export const updateTodoFail = (msg:string):TodoAction=>({
+    type:TodoActionTypes.UPDATE_TODO_FAIL,
+    payload:msg
+});
+
+export const updateTodo = (todo:Todo):TodoAction =>({
+    type:TodoActionTypes.UPDATE_TODO,
+    payload:todo
+});
+// update
+
+//create
+export const createTodo = (todo:Todo):TodoAction=>({
+   type:TodoActionTypes.CREATE_TODO,
+   payload:todo
+});
+
+export const createTodoSuccess = (todo:Todo):TodoAction=>({
+    type:TodoActionTypes.CREATE_TODO_SUCCESS,
+    payload:todo
+});
+
+export const creatTodoFail = (msg:string):TodoAction => ({
+   type:TodoActionTypes.CREATE_TODO_FAIL,
+   payload:msg
+});
+//create

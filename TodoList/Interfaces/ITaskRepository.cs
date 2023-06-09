@@ -5,7 +5,7 @@ namespace TodoList.Interfaces
 {
 	public interface ITaskRepository
 	{
-		public Task AddTaskAsync(TaskViewModel task);
+		public Task<TaskViewModel> AddTaskAsync(TaskViewModel task);
 
 		public Task UpdateTaskAsync(TaskViewModel task,int id);
 

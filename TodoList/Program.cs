@@ -10,6 +10,7 @@ using GraphQL.Server.Transports.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -35,17 +36,16 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(serv =>
 });
 
 
-builder.Services.AddScoped<TaskQuery>();
-builder.Services.AddScoped<TaskMutation>();
-builder.Services.AddScoped<CategoryQuery>();
-builder.Services.AddScoped<CategoryMutation>();
+
+
+builder.Services.AddScoped<RootMutation>();
+builder.Services.AddScoped<RootQuery>();
 
 builder.Services.AddGraphQL((options)=>
 {
 	
-	options.AddSchema<TaskSchema>(serviceLifetime:GraphQL.DI.ServiceLifetime.Scoped)
-	.AddSchema<CategorySchema>(serviceLifetime:GraphQL.DI.ServiceLifetime.Scoped)
-	.AddGraphTypes()
+	options.AddSchema<AppSchema>(serviceLifetime:GraphQL.DI.ServiceLifetime.Scoped)
+		.AddGraphTypes()
 	.AddErrorInfoProvider(e=>e.ExposeExceptionDetails=true)
 	.AddSystemTextJson();
 });
@@ -65,13 +65,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseGraphQLAltair();
-app.UseGraphQL();
-app.MapGraphQL<TaskSchema>("tasks");
-app.MapGraphQL<CategorySchema>("category");
-app.UseRouting();
 
+app.UseStaticFiles();
+
+app.UseGraphQLAltair("/ui/graphql")
+	.UseGraphQL();
+
+
+app.UseRouting();
+app.UseCors(o =>o.WithOrigins("http://localhost:3000/").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",

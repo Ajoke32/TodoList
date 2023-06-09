@@ -21,11 +21,13 @@ namespace TodoList.Repositories
 			return categories.ToList();
 		}
 
-		public async Task CreateAsync(Category category)
+		public async Task<Category> CreateAsync(Category category)
 		{
 			using var connection = new SqlConnection(_connectionString);
 
-			await connection.ExecuteAsync("insert into Categories(Title) values (@Title)", category);
+			return await connection.QuerySingleAsync<Category>("insert into Categories(Title)" +
+			                              "output inserted.id,inserted.title" +
+			                              " values (@Title)", category);
 		}
 
 		public async Task<Category> GetCategoryById(int id)

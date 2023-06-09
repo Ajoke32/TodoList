@@ -16,14 +16,16 @@ namespace TodoList.Repositories
     {
 
         private string path = Directory.GetCurrentDirectory() + "/Tasks.xml";
-        public Task AddTaskAsync(TaskViewModel task)
+        public Task<TaskViewModel> AddTaskAsync(TaskViewModel task)
         {
             StreamReader reader = new StreamReader(path);
             var tasks = reader.Deserialize<TaskViewModel>().ToList();
             task.Id = tasks.Count + 1;
             tasks.Add(task);
             StreamWriter wr = new StreamWriter(path);
-            return wr.SaveAsync(tasks);
+            wr.SaveAsync(tasks);
+
+            return Task.Run(()=>task);
         }
 
         public async Task DeleteTaskAsync(int id)

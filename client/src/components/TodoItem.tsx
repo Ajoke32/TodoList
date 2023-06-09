@@ -1,33 +1,35 @@
 import { AiOutlineDelete,AiOutlineCheck,AiOutlineUndo } from "react-icons/ai";
-import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Todo} from "../types/todo";
+import {AiOutlineFieldTime} from "react-icons/ai";
+import {AppDispatch} from "../store";
+import {removeTodo, updateTodo} from "../store/action-creators/todo";
 
 const TodoItem = (props:Todo) => {
 
     const {todos} = useTypedSelector(state => state.todos);
 
-    const {removeTodo,updateTodo} = useActions();
+    const dispatch = AppDispatch;
+
 
     function onDeleteClick(id:number){
-        removeTodo(id);
+        dispatch(removeTodo(id));
     }
+
     function toComplete(id:number){
         const todo = todos.filter(t=>t.id===id)[0];
-        todo.isCompleted = !todo.isCompleted;
-        updateTodo(todo);
+        const updatedTodo = {...todo, isCompleted: !todo.isCompleted};
+        dispatch(updateTodo(updatedTodo));
     }
 
     return (
         <div className={`todo-item ${props.isCompleted ? 'completed' : ''}`}>
-            <div>{props.id}</div>
-            <div>{props.title}</div>
-            <div>{props.categoryName}</div>
-            <div>{props.expirationDate==null?"":props.expirationDate.toString()}</div>
-            <div>{props.isCompleted?"yes":"no"}</div>
-            <div id="delete" onClick={()=>onDeleteClick(props.id)}><AiOutlineDelete /></div>
-            {props.isCompleted?<div id="undo-complete" onClick={()=>toComplete(props.id)}> <AiOutlineUndo /> </div>:
-                <div id="complete" onClick={()=>toComplete(props.id)}><AiOutlineCheck /></div >}
+            <div >{props.title}</div>
+            <div >{props.categoryId}</div>
+            <div>{props.expirationDate==null?<AiOutlineFieldTime />:props.expirationDate.toString()}</div>
+            <div id="delete" className="clickable" onClick={()=>onDeleteClick(props.id)}><AiOutlineDelete /></div>
+            {props.isCompleted?<div className="clickable" id="undo-complete" onClick={()=>toComplete(props.id)}> <AiOutlineUndo /> </div>:
+                <div className="clickable" id="complete" onClick={()=>toComplete(props.id)}><AiOutlineCheck /></div >}
         </div>
     );
 };

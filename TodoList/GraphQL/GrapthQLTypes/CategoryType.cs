@@ -8,7 +8,7 @@ namespace TodoList.GraphQL.GrapthQLTypes
 	{
 	   public CategoryType()
 	   {
-		  Field(x=>x.Id,type:typeof(IdGraphType));
+		  Field(x=>x.Id);
 		  Field(x=>x.Title).Description("category title");
 	   }
 	}

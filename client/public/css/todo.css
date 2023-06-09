@@ -6,18 +6,34 @@ body{
 
 .todo-item{
     font-size: 20px;
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 200px 200px 180px 50px 50px;
+    text-align: center;
+}
+::-webkit-scrollbar {
+    width: 10px;
 }
 
+
+::-webkit-scrollbar-track {
+    background: #fcfcfc;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: #b4b4b4;
+    border-radius: 5px;
+}
 .todo-container{
+    overflow-y: auto;
+    height: 350px;
     margin: 60px auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-#delete,#complete,#undo-complete{
+
+.clickable{
     transition: 0.1s;
     font-size: 25px;
     cursor: pointer;
@@ -34,26 +50,52 @@ body{
 }
 
 #todo-create{
+    width: 710px;
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 35%;
+    bottom: 25%;
     margin: auto;
     display: flex;
     justify-content: center;
-    gap: 5px;
+    align-items: flex-end;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 18px;
 }
+
 #todo-create input:not(input[type='submit']){
     outline: none;
     border: none;
     padding: 5px;
     border-bottom: 1px solid lightgray;
 }
+#todo-create input[type='submit'],button{
+    flex-grow: 1;
+    cursor: pointer;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
 .try{
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 5px;
+}
+.try input{
+    cursor: pointer;
 }
 .completed{
     text-decoration: line-through;
+}
+
+.display-none{
+    display:none;
+}
+.display{
+    display: block;
 }
