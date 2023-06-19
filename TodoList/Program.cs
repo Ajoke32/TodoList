@@ -6,7 +6,7 @@ using TodoList.GraphQL.Mutations;
 using TodoList.Utils;
 using TodoList.GraphQL.Schemes;
 using TodoList.GraphQL.Queries;
-using GraphQL.Server.Transports.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,25 +14,28 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddCors(c =>
+{
+	c.AddPolicy("AllowOrigin", o =>
+	{
+		o.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+		o.WithHeaders("Custom-Header","Custom-Header2");
+	});
+});
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSingleton<TaskRepositoryManager>();
-
+builder.Services.AddSingleton<CategoryRepositoryManager>();
 
 builder.Services.AddTransient<ITaskRepository>(serv=>
 {
 	var repo = serv.GetRequiredService<TaskRepositoryManager>();
 	return repo.GetTaskRepository();
 });
-builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(serv =>
+builder.Services.AddTransient<ICategoryRepository>(serv =>
 {
-	IConfiguration configuration = serv.GetRequiredService<IConfiguration>();
-	string? connectionString = configuration.GetConnectionString("DefaultConnection");
-	if (connectionString == null)
-	{
-		throw new Exception("Connecion string is not set up");
-	}
-	return new CategoryRepository(connectionString);
+	var repo = serv.GetRequiredService<CategoryRepositoryManager>();
+	return repo.GetCategoryRepository();
 });
 
 
@@ -68,12 +71,12 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseGraphQLAltair("/ui/graphql")
-	.UseGraphQL();
-
 
 app.UseRouting();
-app.UseCors(o =>o.WithOrigins("http://localhost:3000/").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+app.UseCors("AllowOrigin");
+app.UseGraphQLAltair("/ui/graphql")
+	.UseGraphQL();
+app.MapGraphQL().RequireCors("AllowOrigin");
 app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",

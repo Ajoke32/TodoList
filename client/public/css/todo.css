@@ -1,14 +1,15 @@
 body{
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 }
 
 
 .todo-item{
-    font-size: 20px;
     display: grid;
     grid-template-columns: 200px 200px 180px 50px 50px;
     text-align: center;
+    place-items: center;
 }
 ::-webkit-scrollbar {
     width: 10px;
@@ -99,3 +100,10 @@ body{
 .display{
     display: block;
 }
+.text-lg{
+    font-size: 18px;
+}
+.text-md{
+    font-size: 16px;
+}
+

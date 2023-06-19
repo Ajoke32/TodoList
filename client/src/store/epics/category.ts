@@ -31,7 +31,8 @@ export const fetchCategoryEpic: Epic<CategoryAction> = (action$) => action$.pipe
         from(
             todoClient.query<CategoryResponse>(
                 {
-                    query:getAllGategoriesQuery
+                    query:getAllGategoriesQuery,
+                    fetchPolicy:"no-cache"
                 }
             )).pipe(
             map(response => {

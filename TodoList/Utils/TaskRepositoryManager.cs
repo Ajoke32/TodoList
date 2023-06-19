@@ -7,7 +7,7 @@ namespace TodoList.Utils
 {
 	public class TaskRepositoryManager : ITaskRepositoryManager
 	{
-		private IConfiguration _config;
+		private readonly IConfiguration _config;
 		public TaskRepositoryManager(IConfiguration configuration)
 		{
 			_config = configuration;
@@ -15,14 +15,13 @@ namespace TodoList.Utils
 		public ITaskRepository GetTaskRepository()
 		{
 			var state = StorageState.GetState();
+			
 			if (state == Storage.Db)
 			{
 				return new TaskRepository(_config.GetConnectionString("DefaultConnection"));
 			}
-			else
-			{
-				return new XmlTaskRepository();
-			}
+	
+			return new XmlTaskRepository();
 		}
 
 	}

@@ -1,25 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using TodoList.Interfaces;
+using TodoList.Utils;
 
 namespace TodoList.ViewComponents
 {
     public class CategoryListViewComponent:ViewComponent
     {
-        private ICategoryRepository _categoryRepository;
-
-        private IConfiguration _configuration;
-        public CategoryListViewComponent(ICategoryRepository categoryRepo, IConfiguration configuration)
+        private readonly CategoryRepositoryManager _manager;
+        
+        public CategoryListViewComponent(CategoryRepositoryManager manager)
         {
-            _categoryRepository = categoryRepo;
-            _configuration = configuration;
+            _manager = manager;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-            var categories = await _categoryRepository.GetAllCategoriesAsync();
+            var repos = _manager.GetCategoryRepository();
+            
+            var categories = await repos.GetAllCategoriesAsync();
 
             return View(categories);
         }

@@ -1,6 +1,6 @@
 ﻿@using TodoList.Models.DTOs.DisplayDtos;
 
-@model IEnumerable<DisplayTaskViewModel>
+@model IEnumerable<TaskViewModel>
 
 @foreach (var item in Model)
 {
@@ -16,7 +16,7 @@
             <span>@item.Title</span>
             <span>@item.ExpirationDate</span>
         }
-        <span style="color:#a3cef1;text-align:center;">@item.CategoryName</span>
+        <span style="color:#a3cef1;text-align:center;">@item.Category?.Title</span>
         @using (Html.BeginForm("Remove", "Task", new { id = item.Id }, FormMethod.Post))
         {
             @Html.AntiForgeryToken()

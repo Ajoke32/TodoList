@@ -38,10 +38,11 @@ interface UpdateVars{
 export const fetchTodosEpic: Epic<TodoAction> = (action$) => action$.pipe(
     ofType(TodoActionTypes.FETCH_TODOS),
     mergeMap(action =>
-         from(
+        from(
             todoClient.query<TaskResponse>(
                 {
-                    query:getAllTaskQuery
+                    query:getAllTaskQuery,
+                    fetchPolicy:"no-cache"
                 }
             )).pipe(
             map(response => {
@@ -67,7 +68,8 @@ export const updateTodoEpic:Epic<TodoAction> = (action$)=>action$.pipe(
         ).pipe(
             map(res=> {
                 if(res.data){
-                    return updateTodoSuccess(res.data.todo.updateTask);
+                    const task = omitDeep(res.data.todo.updateTask,'__typename') as Todo;
+                    return updateTodoSuccess(task);
                 }
                 return updateTodoFail("data fetching fail");
             }),

@@ -11,20 +11,21 @@ namespace TodoList.ViewComponents
 {
 	public class TaskListViewComponent:ViewComponent
 	{
-		private ITaskRepository _taskRepository;
-
-		private IConfiguration _configuration;
-		public TaskListViewComponent(IConfiguration configuration,TaskRepositoryManager manager)
+		private readonly ITaskRepository _taskRepository;
+		
+		public TaskListViewComponent(TaskRepositoryManager manager)
 		{
 			_taskRepository = manager.GetTaskRepository();
-			_configuration = configuration;
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
-			await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-			
-			var task = await _taskRepository.GetTaskWithCategoryName();
+			var task = await _taskRepository.GetTasksWith<Category>
+				(((model, category) =>
+				{
+					model.Category = category;
+					return model;
+				} ),spitOn:"CategoryId");
 			
 			return View(task);
 		}

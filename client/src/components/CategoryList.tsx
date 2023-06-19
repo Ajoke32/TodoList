@@ -16,6 +16,7 @@ const CategoryList = (props:CategoryListProps) => {
     function onDataListInputClick(e:React.MouseEvent<HTMLInputElement>){
         e.currentTarget.value = "";
     }
+
     useEffect(()=>{
         dispatch(fetchCategory());
     },[]);

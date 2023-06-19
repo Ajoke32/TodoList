@@ -1,5 +1,7 @@
 using System;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using TodoList.Interfaces;
 using TodoList.Models;
 using TodoList.Models.DTOs.DisplayDtos;
@@ -15,82 +17,86 @@ namespace TodoList.Repositories
     public class XmlTaskRepository : ITaskRepository
     {
 
-        private string path = Directory.GetCurrentDirectory() + "/Tasks.xml";
-        public Task<TaskViewModel> AddTaskAsync(TaskViewModel task)
+        private readonly string _path = Directory.GetCurrentDirectory() + "/Todos.xml";
+        public async Task<TaskViewModel> AddTaskAsync(TaskViewModel task)
         {
-            StreamReader reader = new StreamReader(path);
-            var tasks = reader.Deserialize<TaskViewModel>().ToList();
-            task.Id = tasks.Count + 1;
-            tasks.Add(task);
-            StreamWriter wr = new StreamWriter(path);
-            wr.SaveAsync(tasks);
-
-            return Task.Run(()=>task);
+            var doc = await XmlDocumentExtension.LoadDocumentAsync(_path);
+            task.Id = new Random().Next();
+            var element = XmlModelSerializer.EntityToXmlElement(task);
+            doc.Root.Add(element);
+            await doc.SaveDocumentAsync(_path);
+            
+            return task;
         }
 
         public async Task DeleteTaskAsync(int id)
         {
-            var tasks = await GetAllTasksAsync();
-            TaskViewModel task = tasks.FirstOrDefault(t => t.Id == id);
-            tasks.Remove(task);
-            StreamWriter wr = new StreamWriter(path);
-            await wr.SaveAsync(tasks);
+
+            var doc = await XmlDocumentExtension.LoadDocumentAsync(_path);
+            
+            var xElement = doc.Root.Elements().FirstOrDefault(e => e.Element("Id").Value == id.ToString());
+            
+            xElement.Remove();
+
+            await doc.SaveDocumentAsync(_path);
         }
 
         public Task<List<TaskViewModel>> GetAllTasksAsync()
         {
-            StreamReader sr = new StreamReader(path);
-            List<TaskViewModel> tasks = sr.Deserialize<TaskViewModel>().OrderBy(t => t.IsCompleted == true).ToList();
+            var sr = new StreamReader(_path);
+            var tasks = sr.Deserialize<TaskViewModel>()
+                .OrderBy(t => t.IsCompleted).ToList();
+
+            var cateReader = new StreamReader(Directory.GetCurrentDirectory()+"/Categories.xml");
+            
+            var categories = cateReader.Deserialize<Category>();
+            foreach (var task in tasks)
+            {
+                task.Category = categories.FirstOrDefault(c => c.Id == task.CategoryId);
+            }
             return Task.Run(() => tasks);
         }
-
-        public Task<TaskViewModel> GetTaskByIdAsync(int id)
+        
+        public async Task<TaskViewModel?> GetTaskByIdAsync(int id)
         {
-            StreamReader sr = new StreamReader(path);
-            List<TaskViewModel> tasks = sr.Deserialize<TaskViewModel>().ToList();
-
-            return Task.Run(() => tasks.FirstOrDefault(t => t.Id == id));
+            var doc = await XmlDocumentExtension.LoadDocumentAsync(_path);
+            
+            return doc.DeserializeFirstOfDefault<TaskViewModel>(e=>
+                e.Element("Id")?.Value==id.ToString());
         }
+        
 
-        public Task<List<DisplayTaskViewModel>> GetTaskWithCategoryName()
+        public async Task<IEnumerable<TaskViewModel>> GetTasksWith<T>(Func<TaskViewModel, T, TaskViewModel>? map = null, string spitOn = "")
         {
-            List<DisplayTaskViewModel> list = new List<DisplayTaskViewModel>();
-            StreamReader sr = new StreamReader(path);
-            List<TaskViewModel> tasks = sr.Deserialize<TaskViewModel>().ToList();
-            foreach (var item in tasks)
-            {
-                list.Add(new DisplayTaskViewModel()
-                {
-                    Id = item.Id,
-                    Title = item.Title,
-                    ExpirationDate = item.ExpirationDate,
-                    IsCompleted = item.IsCompleted,
-                    CategoryName = item.CategoryId.ToString(),
-                });
-            }
-
-            return Task.Run(() => list.OrderBy(t => t.IsCompleted).ToList());
+           
+            return await GetAllTasksAsync();
         }
 
         public async Task UpdateCompletionState(bool state, int id)
         {
-            var tasks = await GetAllTasksAsync();
-            TaskViewModel task = tasks.FirstOrDefault(t => t.Id == id);
-            task.IsCompleted = state;
-            StreamWriter wr = new StreamWriter(path);
-            await wr.SaveAsync(tasks);
+            var doc = await XmlDocumentExtension.LoadDocumentAsync(_path);
+
+            var elem = doc.GetElementBy("Id",id.ToString());
+            
+            elem.SetElementValue("IsCompleted",state);
+            
+            await doc.SaveDocumentAsync(_path);
+            
         }
 
         public async Task UpdateTaskAsync(TaskViewModel task, int id)
         {
-            var tasks = await GetAllTasksAsync();
-            int searchTask = tasks.IndexOf(task);
-            if (searchTask != -1)
-            {
-                tasks[searchTask] = task;
-            }
-            StreamWriter wr = new StreamWriter(path);
-            await wr.SaveAsync(tasks);
+            var doc =  await XmlDocumentExtension.LoadDocumentAsync(_path);
+            
+            var el = doc.GetElementBy("Id",id.ToString());
+
+            var taskElement = XmlModelSerializer.EntityToXmlElement(task);
+            
+            el.ReplaceWith(taskElement);
+
+            await doc.SaveDocumentAsync(_path);
+
         }
+        
     }
 }

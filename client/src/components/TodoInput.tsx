@@ -15,7 +15,8 @@ const TodoInputInitialState: Todo = {
     categoryId: 7,
     title: "",
     expirationDate: null,
-    isCompleted: false
+    isCompleted: false,
+    category:null
 }
 
 const TodoInput = () => {

@@ -14,11 +14,7 @@ namespace TodoList.GraphQL.Queries
 			_repository = repos;
 			FieldAsync<ListGraphType<CategoryType>>("categories",
 			 "gets all categories",
-			 resolve: async context =>
-			 {
-				 return await _repository.GetAllCategoriesAsync();
-			 }
-			);
+			 resolve: async context => await _repository.GetAllCategoriesAsync());
 			
 			FieldAsync<CategoryType>("getById",
 			  arguments:new QueryArguments(new QueryArgument<NonNullGraphType<IntGraphType>>(){Name="id"}),
@@ -29,7 +25,7 @@ namespace TodoList.GraphQL.Queries
 				 return await _repository.GetCategoryById(id);
 			  }
 			);
-			
+
 		}
 		
 	}

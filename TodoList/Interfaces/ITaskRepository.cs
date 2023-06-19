@@ -13,11 +13,10 @@ namespace TodoList.Interfaces
 
 		public Task UpdateCompletionState(bool state, int id);
 
-		public Task<TaskViewModel> GetTaskByIdAsync(int id);
+		public Task<TaskViewModel?> GetTaskByIdAsync(int id);
 
 		public Task<List<TaskViewModel>> GetAllTasksAsync();
-		
-		public Task<List<DisplayTaskViewModel>> GetTaskWithCategoryName();
 
+		public Task<IEnumerable<TaskViewModel>> GetTasksWith<T>(Func<TaskViewModel,T,TaskViewModel>? map=null,string spitOn="");
 	}
 }

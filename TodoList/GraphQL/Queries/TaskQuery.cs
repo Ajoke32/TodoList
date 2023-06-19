@@ -12,11 +12,7 @@ using TodoList.Utils;
 
 namespace TodoList.GraphQL.Queries
 {
-	public class SomeType
-	{
-		public List<string> Titels { get; set; }
-	}
-
+	
 	public sealed class TaskQuery : ObjectGraphType
 	{
 		public TaskQuery(ITaskRepository repos)
@@ -26,7 +22,11 @@ namespace TodoList.GraphQL.Queries
 			
 			FieldAsync<ListGraphType<TaskType>>("tasks",
 			 "gets all task",
-			 resolve: async context => await repository.GetAllTasksAsync());
+			 resolve: async _ => await repository.GetTasksWith<Category>((task, category) =>
+			 {
+				 task.Category = category;
+				 return task;
+			 },"CategoryId"));
 
 
 		

@@ -5,6 +5,7 @@ using TodoList.Interfaces;
 using TodoList.Models;
 using AutoMapper;
 using TodoList.Models.InputDTOs;
+using TodoList.Repositories;
 using TodoList.Utils.Enums;
 using TodoList.Utils;
 
@@ -14,7 +15,7 @@ namespace TodoList.Controllers
 	{
 
 
-		private ITaskRepository _taskRepository;
+		private readonly ITaskRepository _taskRepository;
 
 		private readonly IMapper _mapper;
 		public TaskController(IMapper mapper,IConfiguration configuration,TaskRepositoryManager manager)
@@ -30,7 +31,7 @@ namespace TodoList.Controllers
 		   return RedirectToAction("Tasks");
 		}
 		
-		
+
 		[HttpPost]
 		public async Task<IActionResult> Update(TaskInputViewModel task,int id)
 		{
@@ -55,9 +56,9 @@ namespace TodoList.Controllers
 		
 			if (ModelState.IsValid)
 			{
-				var _task = _mapper.Map<TaskViewModel>(task);
+				var mapped = _mapper.Map<TaskViewModel>(task);
 				
-				await _taskRepository.AddTaskAsync(_task);
+				await _taskRepository.AddTaskAsync(mapped);
 				
 				return RedirectToAction("Tasks");
 			}

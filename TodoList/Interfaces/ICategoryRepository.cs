@@ -9,7 +9,7 @@ namespace TodoList.Interfaces
 		
 		public Task<Category> CreateAsync(Category category);
 		
-		public Task<Category> GetCategoryById(int id);
+		public Task<Category?> GetCategoryById(int id);
 		
 		public Task UpdateCategory(Category category);
 		

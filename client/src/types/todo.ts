@@ -1,4 +1,4 @@
-
+import {Category} from "./category";
 
 
 export interface Todo{
@@ -7,6 +7,7 @@ export interface Todo{
     categoryId:number,
     isCompleted:boolean,
     expirationDate?:Date|null
+    category:Category|null
 }
 
 export interface TodoState{

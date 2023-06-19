@@ -14,7 +14,7 @@ namespace TodoList.Repositories
 		}
 		public async Task<List<Category>> GetAllCategoriesAsync()
 		{
-			using var connection = new SqlConnection(_connectionString);
+			await using var connection = new SqlConnection(_connectionString);
 
 			var categories = await connection.QueryAsync<Category>("select * from Categories");
 
@@ -23,16 +23,16 @@ namespace TodoList.Repositories
 
 		public async Task<Category> CreateAsync(Category category)
 		{
-			using var connection = new SqlConnection(_connectionString);
+			await using var connection = new SqlConnection(_connectionString);
 
 			return await connection.QuerySingleAsync<Category>("insert into Categories(Title)" +
 			                              "output inserted.id,inserted.title" +
 			                              " values (@Title)", category);
 		}
 
-		public async Task<Category> GetCategoryById(int id)
+		public async Task<Category?> GetCategoryById(int id)
 		{
-			using var connection = new SqlConnection(_connectionString);
+			await using var connection = new SqlConnection(_connectionString);
 
 			var category = await connection.QueryFirstAsync<Category>("select * from Categories where Id=@Id", new { Id = id });
 
@@ -41,14 +41,14 @@ namespace TodoList.Repositories
 
 		public async Task UpdateCategory(Category category)
 		{
-			using var connection = new SqlConnection(_connectionString);
+			await using var connection = new SqlConnection(_connectionString);
 
 			await connection.ExecuteAsync("Update Categories set Title=@Title where Id=@Id", category);
 		}
 
 		public async Task DeleteCategory(int id)
 		{
-			using var connection = new SqlConnection(_connectionString);
+			await using var connection = new SqlConnection(_connectionString);
 			
 			await connection.ExecuteAsync("delete Categories where Id=@Id", new {Id=id});
 		}

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <TaskViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>1</Id>
+        <Title>asx</Title>
+        <ExpirationDate xsi:nil="true" />
+        <IsCompleted>false</IsCompleted>
+        <CategoryId>43</CategoryId>
+    </TaskViewModel>
+
+    
+    
+    <TaskViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>2005063633</Id>
+        <Title>Rasdacasd</Title>
+        <ExpirationDate xsi:nil="true" />
+        <IsCompleted>true</IsCompleted>
+        <CategoryId>1</CategoryId>
+    </TaskViewModel>
+    <TaskViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>1774822193</Id>
+        <Title>Task</Title>
+        <ExpirationDate>2023-06-22T16:37:00</ExpirationDate>
+        <IsCompleted>false</IsCompleted>
+        <CategoryId>1</CategoryId>
+    </TaskViewModel>
+<TaskViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Id>996825699</Id><Title>SomeTask</Title><ExpirationDate>2023-06-14T14:07:00Z</ExpirationDate><IsCompleted>false</IsCompleted><CategoryId>1664017008</CategoryId></TaskViewModel><TaskViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Id>1054174219</Id><Title>TasxcaqwexSasdR</Title><ExpirationDate xsi:nil="true" /><IsCompleted>false</IsCompleted><CategoryId>1664017008</CategoryId></TaskViewModel><TaskViewModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Id>1129107792</Id><Title>New</Title><ExpirationDate xsi:nil="true" /><IsCompleted>false</IsCompleted><CategoryId>561883855</CategoryId></TaskViewModel></Root>

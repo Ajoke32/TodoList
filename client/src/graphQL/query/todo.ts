@@ -10,6 +10,9 @@ query{
       title,
       expirationDate,
       isCompleted
+      category{
+        title
+      }
     }
   }
 }

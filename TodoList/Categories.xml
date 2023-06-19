@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+    <Category>
+        <Id>1</Id>
+        <Title>Sport</Title>
+    </Category>
+    <Category xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>1664017008</Id>
+        <Title>Rest</Title>
+    </Category>
+<Category xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Id>561883855</Id><Title>Bew</Title></Category></Root>
